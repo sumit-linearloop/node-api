@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  nest-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sumit-api
+    container_name: sumit-api
+    restart: unless-stopped
+    ports:  # Correct the key from "Port" to "ports"
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      - REDIS_DB_HOST=${REDIS_DB_HOST}
+      - REDIS_DB_PORT=${REDIS_DB_PORT}
+      - REDIS_DB_USERNAME=${REDIS_DB_USERNAME}
+      - REDIS_DB_PASSWORD=${REDIS_DB_PASSWORD}
+      - DOCKER_USERNAME=${DOCKER_USERNAME}
+      - DOCKER_PASSWORD=${DOCKER_PASSWORD}
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
