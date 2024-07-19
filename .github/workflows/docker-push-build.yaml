@@ -33,11 +33,11 @@ jobs:
         run: docker tag node-api:latest ${{ env.DOCKER_USERNAME }}/node-api:latest
 
       - name: Push Docker image
-        run: docker push ${{ env.DOCKER_USERNAME }}/node-api:latest
+        run: docker push ${{ env.DOCKER_USERNAME }}/node-api:${{ github.run_number }} .
 
       - name: Tag Docker image with build number
         run: |
           BUILD_NUMBER=$(date +%s)
-          docker tag node-api:latest ${{ env.DOCKER_USERNAME }}/node-api:${BUILD_NUMBER}
-          docker push ${{ env.DOCKER_USERNAME }}/node-api:${BUILD_NUMBER}
+          docker tag node-api:latest ${{ env.DOCKER_USERNAME }}/node-api:${{ github.run_number }} .
+          docker push ${{ env.DOCKER_USERNAME }}/node-api:${{ github.run_number }}
 
