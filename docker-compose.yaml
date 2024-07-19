@@ -5,8 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: sumit-api
-    container_name: sumit-api
+    image: node-api
+    container_name: node-api
     restart: unless-stopped
     ports:  # Correct the key from "Port" to "ports"
       - "3000:3000"
