@@ -18,3 +18,6 @@ else
   echo "Failed to download .env file from s3://${S3_BUCKET}/${S3_OBJECT_KEY}"
   exit 1
 fi
+
+
+# sumit
