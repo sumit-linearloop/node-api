@@ -80,10 +80,23 @@ jobs:
       - name: Push Docker image
         run: docker push ${{ env.DOCKER_USERNAME }}/node-api:latest
 
+      - name: Get and increment build number
+        id: get-build-number
+        run: |
+          BUILD_NUMBER=$(cat build-number.txt)
+          NEW_BUILD_NUMBER=$((BUILD_NUMBER + 1))
+          echo "BUILD_NUMBER=${NEW_BUILD_NUMBER}" >> $GITHUB_ENV
+          echo "${NEW_BUILD_NUMBER}" > build-number.txt
+
       - name: Tag Docker image with build number
         run: |
-          BUILD_NUMBER=$(date +%s)
-          docker tag node-api:latest ${{ env.DOCKER_USERNAME }}/node-api:${BUILD_NUMBER}
-          docker push ${{ env.DOCKER_USERNAME }}/node-api:${BUILD_NUMBER}
+          docker tag node-api:latest ${{ env.DOCKER_USERNAME }}/node-api:${{ env.BUILD_NUMBER }}
+          docker push ${{ env.DOCKER_USERNAME }}/node-api:${{ env.BUILD_NUMBER }}
 
-
+      - name: Commit updated build number
+        run: |
+          git config --global user.name 'sumit-linearloop'
+          git config --global user.email 'sumit@linearloop.io'
+          git add build-number.txt
+          git commit -m "Increment build number to ${{ env.BUILD_NUMBER }}"
+          git push
