@@ -52,7 +52,7 @@ on:
 
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-  DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
 jobs:
   build-and-push:
@@ -82,7 +82,7 @@ jobs:
 
       - name: Tag Docker image with build number
         run: |
-          BUILD_NUMBER=BUILD_NUMBER = $(BUILD_NUMBER + 1)
+          BUILD_NUMBER=$(date +%Y%m%d%H%M%S)
           docker tag node-api:latest ${{ env.DOCKER_USERNAME }}/node-api:${BUILD_NUMBER}
           docker push ${{ env.DOCKER_USERNAME }}/node-api:${BUILD_NUMBER}
 
