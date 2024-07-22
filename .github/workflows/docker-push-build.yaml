@@ -82,7 +82,8 @@ jobs:
 
       - name: Tag Docker image with build number
         run: |
-          BUILD_NUMBER=$(uuidgen)
+          BUILD_NUMBER=$(cat build_number.txt)
+          BUILD_NUMBER=$((BUILD_NUMBER + 1))
           docker tag node-api:latest ${{ env.DOCKER_USERNAME }}/node-api:${BUILD_NUMBER}
           docker push ${{ env.DOCKER_USERNAME }}/node-api:${BUILD_NUMBER}
 
