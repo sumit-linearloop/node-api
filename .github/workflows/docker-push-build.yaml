@@ -82,7 +82,7 @@ jobs:
 
       - name: Tag Docker image with build number
         run: |
-          BUILD_NUMBER=$(date +%Y%m%d-%s)
+          BUILD_NUMBER=$(TZ='Asia/Kolkata' date +%s)
           docker tag node-api:latest ${{ env.DOCKER_USERNAME }}/node-api:${BUILD_NUMBER}
           docker push ${{ env.DOCKER_USERNAME }}/node-api:${BUILD_NUMBER}
 
