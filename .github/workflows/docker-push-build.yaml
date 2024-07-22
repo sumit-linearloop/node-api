@@ -81,9 +81,15 @@ jobs:
         run: docker push ${{ env.DOCKER_USERNAME }}/node-api:latest
 
       - name: Tag Docker image with build number
+        id: build_number
         run: |
+          if [ ! -f build_number.txt ]; then
+            echo "0" > build_number.txt
+          fi
           BUILD_NUMBER=$(cat build_number.txt)
-          BUILD_NUMBER=$((BUILD_NUMBER + 1)) > build_number.txt
+          BUILD_NUMBER=$((BUILD_NUMBER + 1))
+          echo "$BUILD_NUMBER" > build_number.txt
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
           docker tag node-api:latest ${{ env.DOCKER_USERNAME }}/node-api:${BUILD_NUMBER}
           docker push ${{ env.DOCKER_USERNAME }}/node-api:${BUILD_NUMBER}
 
