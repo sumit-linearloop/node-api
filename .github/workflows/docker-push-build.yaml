@@ -155,4 +155,4 @@ jobs:
           kubeconfig: ${{ secrets.KUBE_CONFIG }}
 
       - name: Deploy to Kubernetes
-        run: kubectl apply -f deployment.yaml
+        run: kubectl apply -f node-api.yaml.yaml
