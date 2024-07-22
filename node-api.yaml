@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-api-deployment
+  labels:
+    app: node-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: node-api
+  template:
+    metadata:
+      labels:
+        app: node-api
+    spec:
+      containers:
+      - name: node-api
+        image: ${{ env.DOCKER_USERNAME }}/node-api:${BUILD_NUMBER}  # Docker hub images name
+        env:
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: redis-secret
+              key: redis-password
