@@ -160,4 +160,5 @@ jobs:
           kubectl version --client
 
       - name: Deploy to Kubernetes
-        run: kubectl apply -f kubernetes/node-api.yaml
+        run: |
+          kubectl apply -f betterbugs/node-api.yaml
