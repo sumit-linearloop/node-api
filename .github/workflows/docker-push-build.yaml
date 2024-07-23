@@ -104,7 +104,7 @@ on:
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
-  kubeconfig: ${{ secrets.KUBECONFIG }}
+  KUBECONFIG: ${{ secrets.KUBE_CONFIG }}
 
 jobs:
   build-and-push:
@@ -149,7 +149,7 @@ jobs:
         uses: azure/setup-kubectl@v1
         with:
           kubectl-version: 'latest'
-          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+          KUBECONFIG: ${{ secrets.KUBE_CONFIG }}
 
       - name: Install kubectl
         run: |
