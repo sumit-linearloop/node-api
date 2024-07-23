@@ -160,10 +160,10 @@ jobs:
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
         run: |
-          echo "$KUBE_CONFIG" > ~/.kube/config
+          echo "$KUBE_CONFIG" > ~/ base64 -d > ~/.kube/config
           chmod 600 ~/.kube/config
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f ./path/to/node-api.yaml  # Ensure this path is correct
+          kubectl apply -f node-api.yaml  # Ensure this path is correct
 
