@@ -128,7 +128,7 @@ jobs:
 
       - name: Tag Docker Image
         run: |
-          BUILD_NUMBER=$(date +%s)
+          BUILD_NUMBER=$(date +%Y%m%d-%N)
           docker tag node-api:latest ${{ env.DOCKER_USERNAME }}/node-api:latest
           docker tag node-api:latest ${{ env.DOCKER_USERNAME }}/node-api:${BUILD_NUMBER}
 
@@ -159,4 +159,4 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f betterbugs/node-api.yaml
+          kubectl apply -f node-api.yaml
