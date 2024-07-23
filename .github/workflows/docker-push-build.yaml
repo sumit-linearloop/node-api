@@ -138,6 +138,7 @@ jobs:
       - name: Tag Docker image with build number
         run: |
           BUILD_NUMBER=$(date +%s)
+          docker build -t node-api:latest .
           docker tag node-api:latest ${{ env.DOCKER_USERNAME }}/node-api:${BUILD_NUMBER}
           docker push ${{ env.DOCKER_USERNAME }}/node-api:${BUILD_NUMB6ER}
   deploy:
