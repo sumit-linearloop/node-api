@@ -167,10 +167,7 @@
 #         run: |
 #           kubectl apply -f node-api.yaml  # Ensure this path is correct
 
-
-
-
-name: CI/CD Pipeline
+name: Build, Push Docker Image and Deploy to Kubernetes
 
 on:
   push:
@@ -180,7 +177,7 @@ on:
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
-  KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+  KUBECONFIG: ${{ secrets.KUBE_CONFIG }}
 
 jobs:
   build-and-push:
@@ -214,7 +211,7 @@ jobs:
           docker tag node-api:latest ${{ env.DOCKER_USERNAME }}/node-api:${BUILD_NUMBER}
           docker push ${{ env.DOCKER_USERNAME }}/node-api:${BUILD_NUMBER}
 
-deploy:
+  deploy:
     runs-on: ubuntu-latest
     needs: build-and-push
     steps:
@@ -242,5 +239,4 @@ deploy:
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f node-api.yaml 
-
+          kubectl apply -f node-api.yaml  # Ensure this path is correct
