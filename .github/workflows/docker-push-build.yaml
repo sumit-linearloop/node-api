@@ -240,4 +240,4 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f node-api.yaml  # Ensure this path is correct
+          kubectl apply -f kubernetes/node-api.yaml  # Ensure this path is correct
