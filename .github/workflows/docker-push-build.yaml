@@ -104,7 +104,7 @@ on:
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
-  KUBECONFIG: ${{ secrets.KUBE_CONFIG }}
+  KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 
 jobs:
   build-and-push:
@@ -162,7 +162,17 @@ jobs:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
         run: |
           echo "$KUBE_CONFIG" > ~/.kube/config
-          chmod 600 ~/.kube/config
+          chmod 600 ~/.kube/
+          shell: /usr/bin/bash -e {0}
+          env:
+            DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+            DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+            KUBE_CONFIG: ${{ secrets.KUBECONFIG }}
+            AWS_DEFAULT_REGION: us-east-1
+            AWS_REGION: us-east-1
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 
       - name: Deploy to Kubernetes
         run: |
