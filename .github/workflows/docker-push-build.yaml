@@ -305,6 +305,7 @@ on:
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+  BUILD_NUMBER: ${{ github.run_number }}
 
 jobs:
   build-and-push:
@@ -335,8 +336,8 @@ jobs:
       - name: Tag Docker image with build number
         run: |
           BUILD_NUMBER=$(date +%s)
-          docker tag node-api:latest ${{ env.DOCKER_USERNAME }}/node-api:${BUILD_NUMBER}
-          docker push ${{ env.DOCKER_USERNAME }}/node-api:${BUILD_NUMBER}
+          docker tag node-api:latest ${{ env.DOCKER_USERNAME }}/node-api:${{ github.run_number }}
+          docker push ${{ env.DOCKER_USERNAME }}/node-api:${{ github.run_number }}
 
   deploy:
     runs-on: ubuntu-latest
