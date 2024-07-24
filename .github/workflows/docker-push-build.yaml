@@ -274,10 +274,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Set up kubectl
-        uses: kubernetes-sigs/setup-kubectl@v2
-        with:
-          version: 'v1.30.3'
+      - name: Install kubectl
+        run: |
+          curl -LO "https://dl.k8s.io/release/v1.30.3/bin/linux/amd64/kubectl"
+          chmod +x ./kubectl
+          sudo mv ./kubectl /usr/local/bin/kubectl
+          kubectl version --client
       
       - name: Configure Kubernetes context
         run: |
