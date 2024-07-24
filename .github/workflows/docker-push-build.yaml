@@ -226,7 +226,6 @@ on:
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
-  KUBECONFIG: ${{ secrets.KUBE_CONFIG }}
 
 jobs:
   build-and-push:
@@ -282,7 +281,10 @@ jobs:
           kubectl version --client
       
       - name: Update kube config
-        run: aws eks update-kubeconfig --region us-east-1 --name ci-cd-pipeline
+        run: |
+          mkdir -p $HOME/.kube
+          export KUBECONFIG=$HOME/.kube/config
+          aws eks update-kubeconfig --region us-east-1 --name ci-cd-pipeline
 
 
       - name: Deploy to Kubernetes
