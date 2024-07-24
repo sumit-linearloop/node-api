@@ -281,11 +281,9 @@ jobs:
           sudo mv ./kubectl /usr/local/bin/kubectl
           kubectl version --client
       
-      - name: Configure Kubernetes context
-        run: |
-          echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
-          chmod 600 $HOME/.kube/config
-          kubectl config view
+      - name: Update kube config
+        run: aws eks update-kubeconfig --region us-east-1 --name ci-cd-pipeline
+
 
       - name: Deploy to Kubernetes
         run: |
