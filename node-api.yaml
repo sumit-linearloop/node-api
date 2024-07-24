@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: node-api
-        image: ${{ env.DOCKER_USERNAME }}/node-api:latest  # Docker hub images name
+        image: sumit246/node-api:latest  # Docker hub images name
 
 ---
 
