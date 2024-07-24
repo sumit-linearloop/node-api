@@ -16,13 +16,7 @@ spec:
     spec:
       containers:
       - name: node-api
-        image: sumit246/node-api:latest  # Docker hub images name
-        env:
-        - name: REDIS_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: redis-secret
-              key: redis-password
+        image: ${{ env.DOCKER_USERNAME }}/node-api:latest  # Docker hub images name
 
 ---
 
