@@ -1,4 +1,4 @@
-name: Build, Push Docker Image and Deploy to Kubernetes
+name: dev branch deployment
 
 on:
   push:
