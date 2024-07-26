@@ -295,12 +295,12 @@
 
 
 
-name: main branch deployment
+name: stag branch deployment
 
 on:
   push:
     branches:
-      - main
+      - stag
 
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -330,19 +330,19 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build --no-cache -f Dockerfile.prod -t node-api:latest .
+          docker build --no-cache -f Dockerfile.stag -t node-api:latest .
 
       - name: Tag Docker image with Docker Hub username
         run: |
-          docker tag node-api:latest ${{ env.DOCKER_USERNAME }}/node-api:latest
+          docker tag stag-api:latest ${{ env.DOCKER_USERNAME }}/stag-api:latest
 
       - name: Push Docker image with 'latest' tag
         run: |
-          docker push ${{ env.DOCKER_USERNAME }}/node-api:latest
+          docker push ${{ env.DOCKER_USERNAME }}/stag-api:latest
 
       - name: Tag Docker image with build number
         run: |
-          docker tag node-api:latest ${{ env.DOCKER_USERNAME }}/node-api:${{ env.BUILD_NUMBER }}
+          docker tag stag-api:latest ${{ env.DOCKER_USERNAME }}/stag-api:${{ env.BUILD_NUMBER }}
           docker push ${{ env.DOCKER_USERNAME }}/node-api:${{ env.BUILD_NUMBER }}
 
   deploy:
@@ -376,5 +376,4 @@ jobs:
       - name: Deploy to Kubernetes
         run: |
           ls -al
-          kubectl rollout restart deployment/node-api-deployment
-          kubectl apply -f node-api.yaml
+          kubectl apply -f stag-api.yaml
