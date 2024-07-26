@@ -330,7 +330,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build --no-cache -f Dockerfile.dev -t node-api:latest .
+          docker build --no-cache -f Dockerfile.prod -t node-api:latest .
 
       - name: Tag Docker image with Docker Hub username
         run: |
@@ -376,5 +376,5 @@ jobs:
       - name: Deploy to Kubernetes
         run: |
           ls -al
-          kubectl apply -f node-api.yaml
           kubectl rollout restart deployment/node-api-deployment
+          kubectl apply -f node-api.yaml
