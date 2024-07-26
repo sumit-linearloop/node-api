@@ -157,4 +157,5 @@ jobs:
       - name: Deploy to Kubernetes
         run: |
           ls -al
+          kubectl delete deployment dev-api-deployment
           kubectl apply -f dev-api.yaml
