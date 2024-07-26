@@ -23,7 +23,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: node-api-services
+  name: main-api-services
 spec:
   type: NodePort
   selector:
