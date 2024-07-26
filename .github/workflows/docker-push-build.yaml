@@ -325,7 +325,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: Build Docker image
-        run: docker build --no-cache -t node-api:latest .
+        run: docker build --no-cache -t node-api:latest -f Dockerfile.prod .
 
       - name: Tag Docker image
         run: docker tag node-api:latest ${{ env.DOCKER_USERNAME }}/node-api:latest
@@ -336,7 +336,7 @@ jobs:
       - name: Tag Docker image with build number
         run: |
           BUILD_NUMBER=$(date +%s)
-          docker tag node-api:latest ${{ env.DOCKER_USERNAME }}/node-api:${{ github.run_number }}
+          docker tag node-api:latest ${{ env.DOCKER_USERNAME }}/node-api:${{ env.BUILD_NUMBER }}
           docker push ${{ env.DOCKER_USERNAME }}/node-api:${{ github.run_number }}
 
   deploy:
