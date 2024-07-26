@@ -330,20 +330,20 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build --no-cache -f Dockerfile.stag -t stag-api:latest .
+          docker build --no-cache -f Dockerfile.stag -t stag-api:prod .
 
       - name: Tag Docker image with Docker Hub username
         run: |
-          docker tag stag-api:latest ${{ env.DOCKER_USERNAME }}/stag-api:latest
+          docker tag stag-api:prod ${{ env.DOCKER_USERNAME }}/stag-api:prod
 
       - name: Push Docker image with 'latest' tag
         run: |
-          docker push ${{ env.DOCKER_USERNAME }}/stag-api:latest
+          docker push ${{ env.DOCKER_USERNAME }}/stag-api:prod
 
       - name: Tag Docker image with build number
         run: |
-          docker tag stag-api:latest ${{ env.DOCKER_USERNAME }}/stag-api:${{ env.BUILD_NUMBER }}
-          docker push ${{ env.DOCKER_USERNAME }}/node-api:${{ env.BUILD_NUMBER }}
+          docker tag stag-api:prod ${{ env.DOCKER_USERNAME }}/stag-api:${{ env.BUILD_NUMBER }}
+          docker push ${{ env.DOCKER_USERNAME }}/stag-api:${{ env.BUILD_NUMBER }}
 
   deploy:
     runs-on: ubuntu-latest
