@@ -31,4 +31,4 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 3000  # Docker-file Build Port Number
+      targetPort: 1402  # Docker-file Build Port Number
