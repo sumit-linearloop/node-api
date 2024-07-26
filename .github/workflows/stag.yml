@@ -330,7 +330,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build --no-cache -f Dockerfile.stag -t node-api:latest .
+          docker build --no-cache -f Dockerfile.stag -t stag-api:latest .
 
       - name: Tag Docker image with Docker Hub username
         run: |
