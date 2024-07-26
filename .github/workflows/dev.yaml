@@ -112,7 +112,7 @@ jobs:
       - name: Build Docker image
         run: |
 #         docker build --no-cache -t dev-api:latest -f Dockerfile.dev .
-          docker build -f Dockerfile.dev -t dev-api:latest .
+          docker build --no-cache -f Dockerfile.dev -t dev-api:latest .
 
 
       - name: Tag Docker image with Docker Hub username
