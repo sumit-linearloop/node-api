@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: dev-api
-        image: sumit246/dev-api:github.$github.run_number # Docker hub images name
+        image: sumit246/dev-api:$github.run_number # Docker hub images name
         imagePullPolicy: Always  
 
 ---
