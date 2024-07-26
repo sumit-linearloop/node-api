@@ -60,7 +60,7 @@ app.use(express.json());
  
 // Sample GET endpoint
 app.get('/', (req, res) => {
-    res.send('hello devops i have create jenkins ci-cd pipeline   !' + process.env.MY_ENV_NAME);
+    res.send('hello devops stag  !' + process.env.MY_ENV_NAME);
 });
  
 app.listen(port, () => {
