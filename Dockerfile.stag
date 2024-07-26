@@ -1,8 +1,0 @@
-FROM node:14
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-ENV NODE_ENV=staging
-EXPOSE 1401
-CMD ["npm", "start"]
