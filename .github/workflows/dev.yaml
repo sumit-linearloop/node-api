@@ -28,47 +28,47 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: Build Docker image
-        run:  docker build --no-cache -t node-api:dev -f Dockerfile.dev .
+        run:  docker build --no-cache -t dev-api:latest -f Dockerfile.dev .
 
       - name: Tag Docker image
-        run: docker tag node-api:dev ${{ env.DOCKER_USERNAME }}/node-api:dev
+        run: docker tag dev-api:latest ${{ env.DOCKER_USERNAME }}dev-api:latest
 
       - name: Push Docker image
-        run: docker push ${{ env.DOCKER_USERNAME }}/node-api:dev
+        run: docker push ${{ env.DOCKER_USERNAME }}/dev-api:latest
 
       - name: Tag Docker image with build number
         run: |
           BUILD_NUMBER=$(date +%s)
-          docker tag node-api:dev ${{ env.DOCKER_USERNAME }}/node-api:${{ github.run_number }}
-          docker push ${{ env.DOCKER_USERNAME }}/node-api:${{ github.run_number }}
+          docker tag dev-api:latest ${{ env.DOCKER_USERNAME }}/dev-api:${{ github.run_number }}
+          docker push ${{ env.DOCKER_USERNAME }}/dev-api:${{ github.run_number }}
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build-and-push
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: build-and-push
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
 
-      - name: Set up AWS CLI
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+  #     - name: Set up AWS CLI
+  #       uses: aws-actions/configure-aws-credentials@v2
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         aws-region: us-east-1
 
-      - name: Install kubectl
-        run: |
-          curl -LO "https://dl.k8s.io/release/v1.30.3/bin/linux/amd64/kubectl"
-          chmod +x ./kubectl
-          sudo mv ./kubectl /usr/local/bin/kubectl
-          kubectl version --client
+  #     - name: Install kubectl
+  #       run: |
+  #         curl -LO "https://dl.k8s.io/release/v1.30.3/bin/linux/amd64/kubectl"
+  #         chmod +x ./kubectl
+  #         sudo mv ./kubectl /usr/local/bin/kubectl
+  #         kubectl version --client
       
-      - name: Update kube config
-        run: |
-          mkdir -p $HOME/.kube
-          export KUBECONFIG=$HOME/.kube/config
-          aws eks update-kubeconfig --region us-east-1 --name ci-cd-pipeline
+  #     - name: Update kube config
+  #       run: |
+  #         mkdir -p $HOME/.kube
+  #         export KUBECONFIG=$HOME/.kube/config
+  #         aws eks update-kubeconfig --region us-east-1 --name ci-cd-pipeline
 
-      - name: Deploy to Kubernetes
-        run: |
-          kubectl apply -f dev.yaml
+  #     - name: Deploy to Kubernetes
+  #       run: |
+  #         kubectl apply -f dev.yaml
