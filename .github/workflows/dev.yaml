@@ -157,4 +157,4 @@ jobs:
       - name: Deploy to Kubernetes
         run: |
           ls -al
-          kubectl apply -f dev.yaml
+          kubectl apply -f dev-api.yaml
