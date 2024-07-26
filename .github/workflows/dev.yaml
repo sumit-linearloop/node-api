@@ -111,9 +111,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-#         docker build --no-cache -t dev-api:latest -f Dockerfile.dev .
           docker build --no-cache -f Dockerfile.dev -t dev-api:latest .
-
 
       - name: Tag Docker image with Docker Hub username
         run: |
@@ -127,6 +125,8 @@ jobs:
         run: |
           docker tag dev-api:latest ${{ env.DOCKER_USERNAME }}/dev-api:${{ env.BUILD_NUMBER }}
           docker push ${{ env.DOCKER_USERNAME }}/dev-api:${{ env.BUILD_NUMBER }}
+
+
 
   # deploy:
   #   runs-on: ubuntu-latest
