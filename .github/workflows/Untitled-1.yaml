@@ -1,11 +1,11 @@
 
-we will have 3 branch
-- PROD (PROD)
-  - fetch env file from s3 (PROD.env)
-- STAG
-  - fetch env file from s3 (STAG.env)
-- DEV
-  - fetch env file from s3 (DEV.env)
+# we will have 3 branch
+# - PROD (PROD)
+#   - fetch env file from s3 (PROD.env)
+# - STAG
+#   - fetch env file from s3 (STAG.env)
+# - DEV
+#   - fetch env file from s3 (DEV.env)
 
 
 
