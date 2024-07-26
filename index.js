@@ -60,7 +60,7 @@ app.use(express.json());
  
 // Sample GET endpoint
 app.get('/', (req, res) => {
-    res.send('Hello DevOps! docker build and push in docker hub acount    ' + process.env.MY_ENV_NAME);
+    res.send('Hello DevOps! docker build and push in docker hub acount with aws   ' + process.env.MY_ENV_NAME);
 });
  
 app.listen(port, () => {
