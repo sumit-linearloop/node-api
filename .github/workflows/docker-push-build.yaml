@@ -295,7 +295,7 @@
 
 
 
-name: Build, Push Docker Image and Deploy to Kubernetes
+name: deployment main
 
 on:
   push:
@@ -338,8 +338,7 @@ jobs:
           docker tag node-api:latest ${{ env.DOCKER_USERNAME }}/node-api:${{ env.BUILD_NUMBER }}
           docker push ${{ env.DOCKER_USERNAME }}/node-api:${{ env.BUILD_NUMBER }}
 
-
-  deploy:
+ deploy:
     runs-on: ubuntu-latest
     needs: build-and-push
     steps:
@@ -368,5 +367,5 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-           kubectl restart deployment node-api-deployment
           kubectl apply -f node-api.yaml
+          kubectl rollout restart deployment/node-api-deployment
