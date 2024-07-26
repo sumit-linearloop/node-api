@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
       - name: dev-api
-        image: sumit246/dev-api:latest  # Docker hub images name
+        image: sumit246/dev-api:latest # Docker hub images name
+        imagePullPolicy: Always  
 
 ---
 
