@@ -300,7 +300,7 @@ name: main branch deployment
 on:
   push:
     branches:
-      - dev
+      - main
 
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
