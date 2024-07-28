@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: stag-api-deployment
+  name: sumit-stag-deployment
   labels:
     app: stag-api
 spec:
@@ -23,7 +23,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: stag-api-services
+  name: sumit-stag-services
 spec:
   type: NodePort
   selector:
