@@ -60,7 +60,7 @@ app.use(express.json());
  
 // Sample GET endpoint
 app.get('/', (req, res) => {
-    res.send('hello devops this is a stag branch       !' + process.env.MY_ENV_NAME);
+    res.send('Hello DevOps This is a Stag Branch                      !' + process.env.MY_ENV_NAME);
 });
  
 app.listen(port, () => {
