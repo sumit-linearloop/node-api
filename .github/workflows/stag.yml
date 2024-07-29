@@ -376,5 +376,7 @@ jobs:
       - name: Deploy to Kubernetes
         run: |
           ls -al
+          kubectl rollout restart deployment/sumit-stag-deployment
           kubectl apply -f stag-api.yaml
+
           
