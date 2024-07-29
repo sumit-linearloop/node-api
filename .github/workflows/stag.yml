@@ -330,19 +330,19 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build --no-cache -f Dockerfile.stag -t stag-api:stag .
+          docker build --no-cache -f Dockerfile.stag -t stag-api:latest .
 
       - name: Tag Docker image with Docker Hub username
         run: |
-          docker tag stag-api:stag ${{ env.DOCKER_USERNAME }}/stag-api:stag
+          docker tag stag-api:latest ${{ env.DOCKER_USERNAME }}/stag-api:latest
 
-      - name: Push Docker image with 'stag' tag
+      - name: Push Docker image with 'latest' tag
         run: |
-          docker push ${{ env.DOCKER_USERNAME }}/stag-api:stag
+          docker push ${{ env.DOCKER_USERNAME }}/stag-api:latest
 
       - name: Tag Docker image with build number
         run: |
-          docker tag stag-api:stag ${{ env.DOCKER_USERNAME }}/stag-api:${{ env.BUILD_NUMBER }}
+          docker tag stag-api:latest ${{ env.DOCKER_USERNAME }}/stag-api:${{ env.BUILD_NUMBER }}
           docker push ${{ env.DOCKER_USERNAME }}/stag-api:${{ env.BUILD_NUMBER }}
 
   deploy:
@@ -376,6 +376,8 @@ jobs:
       - name: Deploy to Kubernetes
         run: |
           ls -al
+          kubectl rollout restart deployment/sumit-stag-deployment
           kubectl apply -f stag-api.yaml
+
 
           
