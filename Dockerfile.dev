@@ -1,8 +1,0 @@
-FROM node:14
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-ENV NODE_ENV=development
-EXPOSE 1400
-CMD ["npm", "start"]

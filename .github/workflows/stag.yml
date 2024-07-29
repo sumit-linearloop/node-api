@@ -377,4 +377,4 @@ jobs:
         run: |
           ls -al
           kubectl apply -f stag-api.yaml
-          kubectl rollout status deployment/sumit-stag-deployment
+          
