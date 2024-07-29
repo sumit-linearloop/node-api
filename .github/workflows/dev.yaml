@@ -156,6 +156,5 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          ls -al
-          kubectl rollout restart deployment/dev-api-deployment
+          ls -la
           kubectl apply -f dev-api.yaml

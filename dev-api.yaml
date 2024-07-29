@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dev-api-deployment
+  name: sumit-dev-deployment
   labels:
     app: dev-api
 spec:
@@ -24,7 +24,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: dev-api-services
+  name: sumit-dev-services
 spec:
   type: NodePort
   selector:
