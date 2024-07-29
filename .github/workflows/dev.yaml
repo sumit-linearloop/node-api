@@ -158,3 +158,5 @@ jobs:
         run: |
           ls -la
           kubectl apply -f dev-api.yaml
+          kubectl rollout restart deployment/sumit-dev-deployment
+          kubectl rollout status deployment/sumit-dev-deployment
