@@ -60,7 +60,7 @@ app.use(express.json());
  
 // Sample GET endpoint
 app.get('/', (req, res) => {
-    res.send('Hello DevOps from stag rep 1   deployment      !' + process.env.MY_ENV_NAME);
+    res.send('Hello DevOps from stag rep 1   deployment and services      !' + process.env.MY_ENV_NAME);
 });
  
 app.listen(port, () => {
