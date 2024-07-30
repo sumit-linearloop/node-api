@@ -103,7 +103,7 @@ loadEnvFromS3().then(() => {
     app.use(express.json());
 
     app.get('/', (req, res) => {
-        res.send('Hello DevOps Change from DEV Rep-1 ' + process.env.MY_ENV_NAME);
+        res.send('Hello DevOps Change from DEV ' + process.env.MY_ENV_NAME);
     });
 
     app.listen(port, () => {
