@@ -54,10 +54,25 @@
 
 
 
+# #!/bin/bash
+
+# # Download the .env file from S3
+# aws s3 cp s3://dmakindia/env/.env.DEV /usr/src/app/.env.DEV
+
+# # Start the Node.js application
+# cmd node index.js
+
+
 #!/bin/bash
 
 # Download the .env file from S3
 aws s3 cp s3://dmakindia/env/.env.DEV /usr/src/app/.env.DEV
 
+# Check if the download was successful
+if [ $? -ne 0 ]; then
+  echo "Failed to download .env file from S3"
+  exit 1
+fi
+
 # Start the Node.js application
-cmd node index.js
+exec node index.js
