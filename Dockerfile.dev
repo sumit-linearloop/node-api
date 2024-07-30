@@ -18,9 +18,8 @@ RUN chmod +x 1.sh
 RUN ./1.sh
 EXPOSE 1400
 ENV AWS_REGION=us-east-1
-ENV AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-ENV AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 CMD ["node", "index.js"]
+
 
 
 
