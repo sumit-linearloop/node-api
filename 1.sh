@@ -60,4 +60,4 @@
 aws s3 cp s3://dmakindia/env/.env.DEV /usr/src/app/.env.DEV
 
 # Start the Node.js application
-exec node index.js
+cmd node index.js
