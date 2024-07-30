@@ -15,7 +15,7 @@ RUN npm install
 COPY . .
 RUN npm install aws-sdk dotenv
 COPY 1.sh /usr/src/app/
-RUN chmod +x /usr/src/app/start.sh
+RUN chmod +x /usr/src/app/1.sh
 EXPOSE 1400
 ENV AWS_REGION=us-east-1
 CMD ["/usr/src/app/1.sh"]
