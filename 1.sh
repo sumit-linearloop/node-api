@@ -24,12 +24,12 @@
 
 #!/bin/bash
 
-# Check if an environment argument is provided
-if [ -z "$1" ]; then
-  echo "Usage: $0 <ENVIRONMENT>"
-  echo "Example: $0 DEV"
-  exit 1
-fi
+# # Check if an environment argument is provided
+# if [ -z "$1" ]; then
+#   echo "Usage: $0 <ENVIRONMENT>"
+#   echo "Example: $0 DEV"
+#   exit 1
+# fi
 
 # # Define the S3 bucket name and set the S3 object key based on the argument
 # S3_BUCKET="aws-cli-env"
@@ -51,3 +51,13 @@ fi
 #   echo "Failed to download .env file from s3://${S3_BUCKET}/${S3_OBJECT_KEY}"
 #   exit 1
 # fi
+
+
+
+#!/bin/bash
+
+# Download the .env file from S3
+aws s3 cp s3://dmakindia/env/.env.DEV /usr/src/app/.env.DEV
+
+# Start the Node.js application
+exec node index.js
