@@ -39,30 +39,79 @@
 
 
 
+// const express = require('express');
+// const dotenv = require('dotenv');
+// const path = require('path');
+ 
+// const app = express();
+ 
+// // Determine which .env file to use based on the NODE_ENV environment variable
+// const envFile = process.env.NODE_ENV === 'production' ? '.env.PROD' :
+//                  process.env.NODE_ENV === 'staging' ? '.env.STAG' :
+//                  '.env.DEV'; // Default to DEV environment
+ 
+// dotenv.config({ path: path.resolve(__dirname, envFile) });
+ 
+// // Use the PORT from the .env file, or default to 5000
+// const port = process.env.API_PORT;
+ 
+// // Middleware to parse JSON requests
+// app.use(express.json());
+ 
+// // Sample GET endpoint
+// app.get('/', (req, res) => {
+//     res.send('Hello DevOps! hello dev branch add' + process.env.MY_ENV_NAME);
+// });
+ 
+// app.listen(port, () => {
+//     console.log(`Server is running on http://localhost:${port}`);
+// });
+
+
+
+
 const express = require('express');
 const dotenv = require('dotenv');
+const AWS = require('aws-sdk');
 const path = require('path');
- 
 const app = express();
- 
-// Determine which .env file to use based on the NODE_ENV environment variable
-const envFile = process.env.NODE_ENV === 'production' ? '.env.PROD' :
-                 process.env.NODE_ENV === 'staging' ? '.env.STAG' :
-                 '.env.DEV'; // Default to DEV environment
- 
-dotenv.config({ path: path.resolve(__dirname, envFile) });
- 
-// Use the PORT from the .env file, or default to 5000
-const port = process.env.API_PORT;
- 
-// Middleware to parse JSON requests
-app.use(express.json());
- 
-// Sample GET endpoint
-app.get('/', (req, res) => {
-    res.send('Hello DevOps! hello dev branch add' + process.env.MY_ENV_NAME);
+
+// Function to load .env file from S3
+async function loadEnvFromS3() {
+    try {
+        // Configure AWS SDK
+        AWS.config.update({ region: 'us-east-1' });
+
+        const s3 = new AWS.S3();
+        const bucketName = 'dmakindia';
+        const envFile = 'env/.env.DEV';
+
+        const data = await s3.getObject({ Bucket: bucketName, Key: envFile }).promise();
+        const envConfig = dotenv.parse(data.Body.toString());
+        for (const k in envConfig) {
+            process.env[k] = envConfig[k];
+        }
+    } catch (error) {
+        console.error('Error fetching .env file from S3:', error);
+    }
+}
+
+// Load environment variables from S3 and start server
+loadEnvFromS3().then(() => {
+    const port = process.env.API_PORT || 3000;
+
+    app.use(express.json());
+
+    app.get('/', (req, res) => {
+        res.send('Hello DevOps Change from DEV Rep-1 ' + process.env.MY_ENV_NAME);
+    });
+
+    app.listen(port, () => {
+        console.log(`Server is running on http://localhost:${port}`);
+    });
 });
- 
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
+
+
+
+
+
