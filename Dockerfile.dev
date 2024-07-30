@@ -8,16 +8,13 @@
 # CMD ["npm", "start"]
 
 
-
-FROM node:14
-WORKDIR /app
-RUN apt-get update && \
-    apt-get install -y awscli && \
-    rm -rf /var/lib/apt/lists/*
+FROM node:18
+WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN aws s3 cp s3://dmakindia/env/.env.DEV .env
-ENV NODE_ENV=development
+RUN npm install aws-sdk dotenv
 EXPOSE 1400
-CMD ["npm", "start"]
+ENV AWS_REGION=us-east-1
+CMD ["node", "index.js"]
+ 
