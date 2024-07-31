@@ -68,48 +68,49 @@
 // });
 
 
-
-
 const express = require('express');
 const dotenv = require('dotenv');
-const AWS = require('aws-sdk');
 const path = require('path');
+const { SecretsManagerClient, GetSecretValueCommand } = require('@aws-sdk/client-secrets-manager');
+ 
 const app = express();
-
-// Function to load .env file from S3
-async function loadEnvFromS3() {
-    try {
-        // Configure AWS SDK
-        AWS.config.update({ region: 'us-east-1' });
-
-        const s3 = new AWS.S3();
-        const bucketName = 'dmakindia';
-        const envFile = 'env/.env.DEV';
-
-        const data = await s3.getObject({ Bucket: bucketName, Key: envFile }).promise();
-        const envConfig = dotenv.parse(data.Body.toString());
-        for (const k in envConfig) {
-            process.env[k] = envConfig[k];
-        }
-    } catch (error) {
-        console.error('Error fetching .env file from S3:', error);
+ 
+const region = 'us-east-1';
+const client = new SecretsManagerClient({ region });
+ 
+async function getSecrets(secretName) {
+  try {
+    const command = new GetSecretValueCommand({ SecretId: secretName });
+    const data = await client.send(command);
+    if (data.SecretString) {
+      return JSON.parse(data.SecretString);
+    } else {
+      console.error("Secret not in string format.");
     }
+  } catch (err) {
+    console.error("Error retrieving secrets:", err);
+  }
+  return null;
 }
-
-// Load environment variables from S3 and start server
-loadEnvFromS3().then(() => {
-    const port = process.env.API_PORT || 3000;
-
-    app.use(express.json());
-
-    app.get('/', (req, res) => {
-        res.send('Hello DevOps Change from DEV ' + process.env.MY_ENV_NAME);
+ 
+(async () => {
+  const secretName = 'Envfile';
+  const secrets = await getSecrets(secretName);
+  if (secrets) {
+    Object.keys(secrets).forEach(key => {
+      process.env[key] = secrets[key];
     });
-
-    app.listen(port, () => {
-        console.log(`Server is running on http://localhost:${port}`);
-    });
-});
+  }
+  const port = process.env.API_PORT_DEV;
+  app.use(express.json());
+  app.get('/', (req, res) => {
+    res.send('Hello DevOps Change from DEV Rep-1 + Secret ' + process.env.MY_ENV_NAME_DEV);
+  });
+ 
+  app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+  });
+})();
 
 
 

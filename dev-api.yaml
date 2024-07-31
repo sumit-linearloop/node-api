@@ -1,7 +1,48 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: sumit-dev-deployment
+#   labels:
+#     app: dev-api
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: dev-api
+#   template:
+#     metadata:
+#       labels:
+#         app: dev-api
+#     spec:
+#       containers:
+#       - name: dev-api
+#         image: sumit246/dev-api:latest # Docker hub images name
+#         imagePullPolicy: Always  
+
+# ---
+
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: sumit-dev-services
+# spec:
+#   type: NodePort
+#   selector:
+#     app: dev-api  # Matches the labels in the Deployment
+#   ports:
+#     - protocol: TCP
+#       port: 80
+#       targetPort: 1400  # Docker-file Build Port Number
+
+
+
+
+
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sumit-dev-deployment
+  name:  sumit-dev-deployment
   labels:
     app: dev-api
 spec:
@@ -16,26 +57,20 @@ spec:
     spec:
       containers:
       - name: dev-api
-        image: sumit246/dev-api:latest # Docker hub images name
-        imagePullPolicy: Always  
-    env:
-      - name: AWS_ACCESS_KEY_ID
-        value: "${AWS_ACCESS_KEY_ID}"
-      - name: AWS_SECRET_ACCESS_KEY
-        value: "${AWS_SECRET_ACCESS_KEY}"
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: sumit-dev-services
-spec:
-  type: NodePort
-  selector:
-    app: dev-api  # Matches the labels in the Deployment
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 1400  # Docker-file Build Port Number
-
+        image: sumit246/dev-api:latest  # Ensure this tag is correct
+        ports:
+        - containerPort: 1400  # Ensure this matches the exposed port in your Dockerfile or application
+        env:
+          - name: NODE_ENV
+            value: "development"  # or another appropriate value
+          - name: API_PORT_DEV
+            valueFrom:
+              secretKeyRef:
+                name: sumit-dev-secret
+                key: api-port-dev
+          - name: MY_ENV_NAME_DEV
+            valueFrom:
+              secretKeyRef:
+                name: sumit-dev-secret
+                key: sumit-dev-env
+        imagePullPolicy: Always

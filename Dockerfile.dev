@@ -7,19 +7,14 @@
 # EXPOSE 1400
 # CMD ["npm", "start"]
 
+
 FROM node:18
-RUN apt-get update && \
-    apt-get install -y awscli
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN chmod +x 1.sh
-RUN /usr/src/app/1.sh
 EXPOSE 1400
-ENV AWS_REGION=us-east-1
 CMD ["node", "index.js"]
-
 
 
 
