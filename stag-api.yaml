@@ -63,25 +63,26 @@ spec:
           - name: API_PORT_STAGE
             valueFrom:
               secretKeyRef:
-                name: stage-secret
-                key: api-port-stage
+                name: sumit-stage-secret
+                key: sumit-stage-port
           - name: MY_ENV_NAME_STAGE
             valueFrom:
               secretKeyRef:
-                name: sumit-stage-secret
+                name: stage-secret
                 key: sumit-stage-env
         imagePullPolicy: Always
-
+ 
+ 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: sumit-stage-services
+  name: sumit-stag-services
 spec:
   type: NodePort
   selector:
-    app: stage-api # Matches the labels in the Deployment
+    app: stage-api # This label should match the label in the Deployment's pod template
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 1401  # Docker-file Build Port Number
+      targetPort: 1401
