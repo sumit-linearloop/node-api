@@ -380,8 +380,6 @@
 #            kubectl rollout status deployment/sumit-prod-deployment
 #           kubectl apply -f node-api.yaml
 
-
-
 name: main branch deployment
 
 on:
