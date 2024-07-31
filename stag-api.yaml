@@ -56,16 +56,16 @@ spec:
       - name: stage-api
         image: sumit246/stag-api:latest  # Ensure this tag is correct
         ports:
-        - containerPort: 1400  # Ensure this matches the exposed port in your Dockerfile or application
+        - containerPort: 1401  # Ensure this matches the exposed port in your Dockerfile or application
         env:
           - name: NODE_ENV
-            value: "development"  # or another appropriate value
-          - name: API_PORT_DEV
+            value: "Staging"  # or another appropriate value
+          - name: API_PORT_STAGE
             valueFrom:
               secretKeyRef:
-                name: sumit-stage-secret
-                key: api-port-dev
-          - name: MY_ENV_NAME_DEV
+                name: stage-secret
+                key: api-port-stage
+          - name: MY_ENV_NAME_STAGE
             valueFrom:
               secretKeyRef:
                 name: sumit-stage-secret
