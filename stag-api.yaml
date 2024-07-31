@@ -68,7 +68,7 @@ spec:
           - name: MY_ENV_NAME_STAGE
             valueFrom:
               secretKeyRef:
-                name: stage-secret
+                name: sumit-stage-secret
                 key: sumit-stage-env
         imagePullPolicy: Always
  
