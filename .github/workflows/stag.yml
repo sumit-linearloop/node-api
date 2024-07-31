@@ -382,12 +382,12 @@
 
 
 
-name: dev branch deployment
+name: stag branch deployment
 
 on:
   push:
     branches:
-      - dev
+      - stag
 
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
