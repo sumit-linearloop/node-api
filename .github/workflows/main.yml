@@ -396,6 +396,7 @@ env:
   AWS_REGION: us-east-1
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  SECRET_NAME: Envfile
 
 jobs:
   build-and-push:
@@ -447,10 +448,8 @@ jobs:
 
       - name: Retrieve secrets from AWS Secrets Manager
         run: |
-          SECRET=$(aws secretsmanager get-secret-value --secret-id ${{ env.SECRET_NAME }} --query SecretString --output text)
+          SECRET=$(aws secretsmanager get-secret-value --secret-id ${{env.SECRET_NAME}} --query SecretString --output text)
           echo $SECRET > .env
-
- 
         env:
           AWS_REGION: ${{ env.AWS_REGION }}
 
