@@ -107,7 +107,7 @@ async function getSecrets(secretName) {
   const port = process.env.API_PORT_STAGE;
   app.use(express.json());
   app.get('/', (req, res) => {
-    res.send('Hello DevOps Change from stag Rep-1 + secret  ' + process.env.MY_ENV_NAME_STAGE);
+    res.send('Hello DevOps  secret  ' + process.env.MY_ENV_NAME_STAGE);
   });
  
   app.listen(port, () => {
