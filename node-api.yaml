@@ -54,10 +54,12 @@ spec:
     spec:
       containers:
       - name: node-api
-        image: sumit246/node-api:latest  # Docker hub images name
-    env:
+        image: sumit246/node-api:latest  # Docker Hub image name
+        ports:
+        - containerPort: 1402  # Ensure this matches the exposed port in your Dockerfile or application
+        env:
           - name: NODE_ENV
-            value: "Prodcution"  # or another appropriate value
+            value: "Production"  # or another appropriate value
           - name: API_PORT_PROD
             valueFrom:
               secretKeyRef:
