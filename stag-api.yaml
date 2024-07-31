@@ -54,7 +54,7 @@ spec:
     spec:
       containers:
       - name: stage-api
-        image:  # Ensure this tag is correct
+        image: sumit246/stag-api:latest  # Ensure this tag is correct
         ports:
         - containerPort: 1400  # Ensure this matches the exposed port in your Dockerfile or application
         env:
