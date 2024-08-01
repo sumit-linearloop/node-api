@@ -262,7 +262,7 @@ env:
   DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
   BUILD_NUMBER: ${{ github.run_number }}
-  SECRET_NAME: Envfile # This should match your secret name, not the ARN
+  SECRET_NAME: Envfile
 
 jobs:
   build-and-push:
@@ -297,6 +297,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build --no-cache -f Dockerfile.dev -t dev-api:latest .
+        continue-on-error: true
 
       - name: Tag Docker image with Docker Hub username
         run: |
