@@ -419,10 +419,10 @@ jobs:
       - name: Tag Docker image with Docker Hub username
         run: |
           docker tag node-api:latest ${{ env.DOCKER_USERNAME }}/node-api:latest
-
+          
       - name: Push Docker image with 'latest' tag
         run: |
-          docker push ${{ env.DOCKER_USERNAME }}/node-api:latest
+           docker push ${{ env.DOCKER_USERNAME }}/node-api:latest
 
       - name: Tag Docker image with build number
         run: |
@@ -466,8 +466,6 @@ jobs:
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -f secret.yaml
-          kubectl rollout restart deployment/sumit-prod-deployment
-          kubectl rollout status deployment/sumit-prod-deployment
-          kubectl apply -f node-api.yaml
-
-
+          kubectl rollout restart deployment/sumit-dev-deployment
+          kubectl rollout status deployment/sumit-dev-deployment
+          kubectl apply -f dev-api.yaml
