@@ -173,6 +173,7 @@ env:
   DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
   BUILD_NUMBER: ${{ github.run_number }}
+  AWS_REGION: us-east-1
   SECRET_NAME: Envfile # Replace with your actual secret name
 
 jobs:
