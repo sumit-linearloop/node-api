@@ -60,20 +60,20 @@ spec:
         image: sumit246/dev-api:latest  # Ensure this tag is correct
         ports:
         - containerPort: 1400  # Ensure this matches the exposed port in your Dockerfile or application
-        env:
-          - name: NODE_ENV
-            value: "development"  # or another appropriate value
-          - name: API_PORT_DEV
-            valueFrom:
-              secretKeyRef:
-                name: sumit-dev-secret
-                key: api-port-dev
-          - name: MY_ENV_NAME_DEV
-            valueFrom:
-              secretKeyRef:
-                name: sumit-dev-secret
-                key: sumit-dev-env
-        imagePullPolicy: Always
+        # env:
+        #   - name: NODE_ENV
+        #     value: "development"  # or another appropriate value
+        #   - name: API_PORT_DEV
+        #     valueFrom:
+        #       secretKeyRef:
+        #         name: sumit-dev-secret
+        #         key: api-port-dev
+        #   - name: MY_ENV_NAME_DEV
+        #     valueFrom:
+        #       secretKeyRef:
+        #         name: sumit-dev-secret
+        #         key: sumit-dev-env
+        # imagePullPolicy: Always
 
 ---
 apiVersion: v1
