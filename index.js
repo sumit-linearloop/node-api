@@ -101,18 +101,14 @@ async function getSecrets(secretName) {
       process.env[key] = secrets[key];
     });
   }
-  const port = process.env.API_PORT_DEV;
+  const port = process.env.API_PORT;
   app.use(express.json());
+ 
   app.get('/', (req, res) => {
-    res.send('Hello Devops This is Sumit Branch In GitHub ' + process.env.MY_ENV_NAME_DEV);
+    res.send('Hello DevOps Sumit branch'            + process.env.MY_ENV_NAME);
   });
  
   app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
   });
 })();
-
-
-
-
-
