@@ -251,65 +251,95 @@
 #           kubectl apply -f dev-api.yaml
 
 
-name: dev branch deployment
-
+name: Dev Branch - Build, Push Docker Image, and Deploy
+ 
 on:
   push:
     branches:
-      - sumit
-
+      - dev
+ 
 env:
-  DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-  DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
-  BUILD_NUMBER: ${{ github.run_number }}
-  SECRET_NAME: Envfile
-
+  AWS_REGION: us-east-1
+  SECRET_NAME: Envfile  # Replace with your actual secret name in AWS Secrets Manager
+ 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Set up AWS CLI
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-
-      - name: Retrieve secret from AWS Secrets Manager
-        id: get-secret
-        run: |
-          SECRET=$(aws secretsmanager get-secret-value --secret-id Envfile --query SecretString --output text)
-          API_PORT=$(echo $SECRET | jq -r .API_PORT)
-          MY_ENV_NAME=$(echo $SECRET | jq -r .MY_ENV_NAME)
-
+ 
       - name: Login to Docker Hub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
-          username: ${{ env.DOCKER_USERNAME }}
-          password: ${{ env.DOCKER_PASSWORD }}
-
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+ 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
+        uses: docker/setup-buildx-action@v2
+ 
       - name: Build Docker image
         run: |
+          IMAGE_TAG=${{ github.sha }}
           docker build --no-cache -f Dockerfile.dev -t dev-api:latest .
-        continue-on-error: true
-
+          
       - name: Tag Docker image with Docker Hub username
         run: |
           docker tag dev-api:latest ${{ env.DOCKER_USERNAME }}/dev-api:latest
 
-      - name: Push Docker image with 'latest' tag
-        run: |
-          docker push ${{ env.DOCKER_USERNAME }}/dev-api:latest
+      - name: Push Docker image
+        run: docker push ${{ env.DOCKER_USERNAME }}/dev-api:latest
 
-      - name: Tag Docker image with build number
-        run: |
-          docker tag dev-api:latest ${{ env.DOCKER_USERNAME }}/dev-api:${{ env.BUILD_NUMBER }}
-          docker push ${{ env.DOCKER_USERNAME }}/dev-api:${{ env.BUILD_NUMBER }}
-
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: build-and-push
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
+ 
+  #     - name: Set up AWS CLI
+  #       uses: aws-actions/configure-aws-credentials@v2
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_EC2_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.AWS_EC2_SECRET_ACCESS_KEY }}
+  #         aws-region: ${{ env.AWS_REGION }}
+ 
+  #     - name: Install jq
+  #       run: sudo apt-get install -y jq
+ 
+  #     - name: Install kubectl
+  #       run: |
+  #         curl -LO "https://dl.k8s.io/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+  #         chmod +x ./kubectl
+  #         sudo mv ./kubectl /usr/local/bin/kubectl
+  #         kubectl version --client
+ 
+  #     - name: Update kubeconfig
+  #       run: |
+  #         mkdir -p $HOME/.kube
+  #         export KUBECONFIG=$HOME/.kube/config
+  #         aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ci-cd-pipeline
+ 
+  #     - name: Retrieve secrets from AWS Secrets Manager
+  #       id: get-secrets
+  #       run: |
+  #         SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id ${{ env.SECRET_NAME }} --query SecretString --output text)
+  #         echo $SECRET_JSON > secrets.json
+  #         # Parsing JSON and setting environment variables
+  #         echo $(jq -r 'to_entries[] | "\(.key)=\(.value)"' secrets.json) | tee -a .env
+ 
+  #     - name: Replace placeholders in deployment file
+  #       run: |
+  #         IMAGE_TAG=${{ github.sha }}
+  #         sed -i.bak "s|jack2153/node-api-dev:dev|${{ secrets.DOCKERHUB_USERNAME }}/node-api-dev:$IMAGE_TAG|g" dev-deployment.yaml
+ 
+  #         while IFS= read -r line; do
+  #           VAR_NAME=$(echo $line | cut -d= -f1)
+  #           VAR_VALUE=$(echo $line | cut -d= -f2-)
+  #           sed -i.bak "s|{{$VAR_NAME}}|$VAR_VALUE|g" dev-deployment.yaml
+  #         done < .env
+ 
+  #     - name: Apply Kubernetes manifests
+  #       run: |
+  #         kubectl rollout restart deployment node-api-dev-deployment
+  #         kubectl apply -f dev-deployment.yaml
