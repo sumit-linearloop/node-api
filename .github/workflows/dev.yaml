@@ -251,9 +251,6 @@
 #           kubectl apply -f dev-api.yaml
 
 
-
-
-
 name: dev branch deployment
 
 on:
@@ -265,7 +262,7 @@ env:
   DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
   BUILD_NUMBER: ${{ github.run_number }}
-  SECRET_NAME: Envfile # Replace with your actual secret name
+  SECRET_NAME: Envfile # This should match your secret name, not the ARN
 
 jobs:
   build-and-push:
@@ -274,6 +271,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Retrieve secret from AWS Secrets Manager
+        id: get-secret
+        run: |
+          SECRET=$(aws secretsmanager get-secret-value --secret-id ${{ env.SECRET_NAME }} --query SecretString --output text)
+          echo "SECRET=${SECRET}" >> $GITHUB_ENV
 
       - name: Login to Docker Hub
         uses: docker/login-action@v1
@@ -301,44 +311,3 @@ jobs:
           docker tag dev-api:latest ${{ env.DOCKER_USERNAME }}/dev-api:${{ env.BUILD_NUMBER }}
           docker push ${{ env.DOCKER_USERNAME }}/dev-api:${{ env.BUILD_NUMBER }}
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build-and-push
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up AWS CLI
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-
-      - name: Retrieve secrets from AWS Secrets Manager
-        id: get-secrets
-        run: |
-          SECRET=$(aws secretsmanager get-secret-value --secret-id ${{ env.SECRET_NAME }} --query SecretString --output text)
-          echo "SECRET=$SECRET" >> $GITHUB_ENV
-
-      - name: Install kubectl
-        run: |
-          curl -LO "https://dl.k8s.io/release/v1.30.3/bin/linux/amd64/kubectl"
-          chmod +x ./kubectl
-          sudo mv ./kubectl /usr/local/bin/kubectl
-          kubectl version --client
-
-      - name: Update kube config
-        run: |
-          mkdir -p $HOME/.kube
-          export KUBECONFIG=$HOME/.kube/config
-          aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name ci-cd-pipeline
-
-      - name: Deploy to Kubernetes
-        run: |
-          kubectl rollout restart deployment/sumit-dev-deployment
-          kubectl rollout status deployment/sumit-dev-deployment
-          kubectl apply -f secret.yaml
-          kubectl apply -f dev-api.yaml
-        env:
-          SECRET: ${{ env.SECRET }}
