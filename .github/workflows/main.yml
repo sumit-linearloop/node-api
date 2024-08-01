@@ -392,11 +392,8 @@ env:
   DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
   BUILD_NUMBER: ${{ github.run_number }}
-  AWS_DEFAULT_REGION: us-east-1
   AWS_REGION: us-east-1
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  SECRET_NAME: Envfile
+  SECRET_NAME: Envfile-prod # Replace with your actual secret name
 
 jobs:
   build-and-push:
@@ -438,37 +435,37 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
+ 
       - name: Set up AWS CLI
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-
+ 
       - name: Retrieve secrets from AWS Secrets Manager
         run: |
-          SECRET=$(aws secretsmanager get-secret-value --secret-id ${{env.SECRET_NAME}} --query SecretString --output text)
+          SECRET=$(aws secretsmanager get-secret-value --secret-id ${{ env.SECRET_NAME }} --query SecretString --output text)
           echo $SECRET > .env
         env:
           AWS_REGION: ${{ env.AWS_REGION }}
-
+ 
       - name: Install kubectl
         run: |
           curl -LO "https://dl.k8s.io/release/v1.30.3/bin/linux/amd64/kubectl"
           chmod +x ./kubectl
           sudo mv ./kubectl /usr/local/bin/kubectl
           kubectl version --client
-
+ 
       - name: Update kube config
         run: |
           mkdir -p $HOME/.kube
           export KUBECONFIG=$HOME/.kube/config
           aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ci-cd-pipeline
-
+ 
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -f secret.yaml
-          kubectl rollout restart deployment/sumit-prod-deployment
-          kubectl rollout status deployment/sumit-prod-deployment
           kubectl apply -f node-api.yaml
+
+

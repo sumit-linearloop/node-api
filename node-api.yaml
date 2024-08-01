@@ -58,19 +58,16 @@ spec:
         ports:
         - containerPort: 1402  # Ensure this matches the exposed port in your Dockerfile or application
         env:
-          - name: NODE_ENV
-            value: "Production"  # or another appropriate value
-          - name: API_PORT_PROD
-            valueFrom:
-              secretKeyRef:
-                name: sumit-prod-secret
-                key: sumit-prod-port
-          - name: MY_ENV_NAME_PROD
-            valueFrom:
-              secretKeyRef:
-                name: sumit-prod-secret
-                key: sumit-prod-env
-        imagePullPolicy: Always
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-main-secrets
+              key: aws-access-key-id
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-main-secrets
+              key: aws-secret-access-key
 ---
 
 apiVersion: v1

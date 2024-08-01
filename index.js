@@ -95,17 +95,18 @@ async function getSecrets(secretName) {
 }
  
 (async () => {
-  const secretName = 'Envfile';
+  const secretName = 'Envfile-prod';
   const secrets = await getSecrets(secretName);
   if (secrets) {
     Object.keys(secrets).forEach(key => {
       process.env[key] = secrets[key];
     });
   }
-  const port = process.env.API_PORT_PROD;
+  const port = process.env.API_PORT;
   app.use(express.json());
+ 
   app.get('/', (req, res) => {
-    res.send('Hello DevOps Change from Production  Secret' + process.env.MY_ENV_NAME_PROD);
+    res.send('Hello DevOps main branch update'            + process.env.MY_ENV_NAME);
   });
  
   app.listen(port, () => {
