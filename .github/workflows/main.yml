@@ -445,7 +445,7 @@ jobs:
  
       - name: Retrieve secrets from AWS Secrets Manager
         run: |
-          SECRET=$(aws secretsmanager get-secret-value --secret-id ${{ env.SECRET_NAME }} --query SecretString --output text)
+          SECRET=$(aws secretsmanager get-secret-value --secret-id ${{ env.SECRET_NAME_MAIN }} --query SecretString --output text)
           echo $SECRET > .env
         env:
           AWS_REGION: ${{ env.AWS_REGION }}
@@ -466,6 +466,6 @@ jobs:
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -f secret.yaml
-          kubectl rollout restart deployment/sumit-dev-deployment
-          kubectl rollout status deployment/sumit-dev-deployment
-          kubectl apply -f dev-api.yaml
+          kubectl rollout restart deployment/sumit-prod-deployment
+          kubectl rollout status deployment/sumit-prod-deployment
+          kubectl apply -f node-api.yaml
