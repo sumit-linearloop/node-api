@@ -256,7 +256,7 @@ name: Dev Branch - Build, Push Docker Image, and Deploy
 on:
   push:
     branches:
-      - dev
+      - sumit
  
 env:
   AWS_REGION: us-east-1
@@ -282,7 +282,7 @@ jobs:
         run: |
           IMAGE_TAG=${{ github.sha }}
           docker build --no-cache -f Dockerfile.dev -t dev-api:latest .
-          
+
       - name: Tag Docker image with Docker Hub username
         run: |
           docker tag dev-api:latest ${{ env.DOCKER_USERNAME }}/dev-api:latest
