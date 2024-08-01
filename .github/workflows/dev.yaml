@@ -246,8 +246,8 @@ jobs:
  
       - name: Deploy to Kubernetes
         run: |
-        kubectl apply -f secret.yaml
-        kubectl apply -f dev-api.yaml
+          kubectl apply -f secret.yaml
+          kubectl apply -f dev-api.yaml
 
 
 
