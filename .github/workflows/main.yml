@@ -393,7 +393,7 @@ env:
   DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
   BUILD_NUMBER: ${{ github.run_number }}
   AWS_REGION: us-east-1
-  SECRET_NAME_MAIN: ${{SECRET_NAME_MAIN }} # Replace with your actual secret name
+  SECRET_NAME_MAIN: Envfile-prod # Replace with your actual secret name
 
 jobs:
   build-and-push:
