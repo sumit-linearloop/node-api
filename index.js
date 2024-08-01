@@ -60,6 +60,36 @@
  
 // // Sample GET endpoint
 // app.get('/', (req, res) => {
+//     res.send('Hello DevOps i have create ci-cd pipeline  re1  !' + process.env.MY_ENV_NAME);
+// });
+ 
+// app.listen(port, () => {
+//     console.log(`Server is running on http://localhost:${port}`);
+// });
+
+
+
+// const express = require('express');
+// const dotenv = require('dotenv');
+// const path = require('path');
+ 
+// const app = express();
+ 
+// // Determine which .env file to use based on the NODE_ENV environment variable
+// const envFile = process.env.NODE_ENV === 'production' ? '.env.PROD' :
+//                  process.env.NODE_ENV === 'staging' ? '.env.STAG' :
+//                  '.env.DEV'; // Default to DEV environment
+ 
+// dotenv.config({ path: path.resolve(__dirname, envFile) });
+ 
+// // Use the PORT from the .env file, or default to 5000
+// const port = process.env.API_PORT;
+ 
+// // Middleware to parse JSON requests
+// app.use(express.json());
+ 
+// // Sample GET endpoint
+// app.get('/', (req, res) => {
 //     res.send('Hello DevOps! hello dev branch add' + process.env.MY_ENV_NAME);
 // });
  
@@ -75,44 +105,24 @@ const { SecretsManagerClient, GetSecretValueCommand } = require('@aws-sdk/client
  
 const app = express();
  
-const region = 'us-east-1';
-const client = new SecretsManagerClient({ region });
+// Determine which .env file to use based on the NODE_ENV environment variable
+const envFile = process.env.NODE_ENV === 'production' ? '.env.PROD' :
+                 process.env.NODE_ENV === 'staging' ? '.env.STAG' :
+                 '.env.DEV'; // Default to DEV environment
  
-async function getSecrets(secretName) {
-  try {
-    const command = new GetSecretValueCommand({ SecretId: secretName });
-    const data = await client.send(command);
-    if (data.SecretString) {
-      return JSON.parse(data.SecretString);
-    } else {
-      console.error("Secret not in string format.");
-    }
-  } catch (err) {
-    console.error("Error retrieving secrets:", err);
-  }
-  return null;
-}
+dotenv.config({ path: path.resolve(__dirname, envFile) });
  
-(async () => {
-  const secretName = 'Envfile';
-  const secrets = await getSecrets(secretName);
-  if (secrets) {
-    Object.keys(secrets).forEach(key => {
-      process.env[key] = secrets[key];
-    });
-  }
-  const port = process.env.API_PORT_DEV;
-  app.use(express.json());
-  app.get('/', (req, res) => {
-    res.send('Hello Devops This is Dev Branch  ' + process.env.MY_ENV_NAME_DEV);
-  });
+// Use the PORT from the .env file, or default to 5000
+const port = process.env.API_PORT;
+ 
+// Middleware to parse JSON requests
+app.use(express.json());
+ 
+// Sample GET endpoint
+app.get('/', (req, res) => {
+    res.send('Hello DevOps ci-cd pipeline create and push kubernetes   !' + process.env.MY_ENV_NAME);
+});
  
   app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
-  });
-})();
-
-
-
-
-
+});
