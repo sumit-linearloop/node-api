@@ -167,7 +167,7 @@ name: dev branch deployment
 on:
   push:
     branches:
-      - dev
+      - sumit
 
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
