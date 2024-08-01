@@ -97,23 +97,21 @@ async function getSecrets(secretName) {
 }
  
 (async () => {
-  const secretName = 'Envfile';
+  const secretName = 'Envfile-stage';
   const secrets = await getSecrets(secretName);
   if (secrets) {
     Object.keys(secrets).forEach(key => {
       process.env[key] = secrets[key];
     });
   }
-  const port = process.env.API_PORT_STAGE;
+  const port = process.env.API_PORT;
   app.use(express.json());
+ 
   app.get('/', (req, res) => {
-    res.send('Hello DevOps this is a stag branch  ' + process.env.MY_ENV_NAME_STAGE);
+    res.send('Hello DevOps STAG branch update'            + process.env.MY_ENV_NAME);
   });
  
   app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
   });
 })();
-
-
-

@@ -393,7 +393,8 @@ env:
   DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
   BUILD_NUMBER: ${{ github.run_number }}
-  SECRET_NAME: Envfile # Replace with your actual secret name
+  AWS_REGION: us-east-1
+  SECRET_NAME_STAG: Envfile-stage # Replace with your actual secret name
 
 jobs:
   build-and-push:
@@ -418,7 +419,7 @@ jobs:
 
       - name: Tag Docker image with Docker Hub username
         run: |
-         docker tag stag-api:latest ${{ env.DOCKER_USERNAME }}/stag-api:latest
+          docker tag stag-api:latest ${{ env.DOCKER_USERNAME }}/stag-api:latest
 
       - name: Push Docker image with 'latest' tag
         run: |
@@ -428,6 +429,7 @@ jobs:
         run: |
           docker tag stag-api:latest ${{ env.DOCKER_USERNAME }}/stag-api:${{ env.BUILD_NUMBER }}
           docker push ${{ env.DOCKER_USERNAME }}/stag-api:${{ env.BUILD_NUMBER }}
+
 
   deploy:
     runs-on: ubuntu-latest
@@ -445,7 +447,7 @@ jobs:
  
       - name: Retrieve secrets from AWS Secrets Manager
         run: |
-          SECRET=$(aws secretsmanager get-secret-value --secret-id ${{ env.SECRET_NAME }} --query SecretString --output text)
+          SECRET=$(aws secretsmanager get-secret-value --secret-id ${{ env.SECRET_NAME_STAG }} --query SecretString --output text)
           echo $SECRET > .env
         env:
           AWS_REGION: ${{ env.AWS_REGION }}
@@ -466,8 +468,6 @@ jobs:
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -f secret.yaml
-          kubectl rollout restart deployment/sumit-stag-deployment
-          kubectl rollout status deployment/sumit-stag-deployment
           kubectl apply -f stag-api.yaml
           
 

@@ -58,19 +58,16 @@ spec:
         ports:
         - containerPort: 1401  # Ensure this matches the exposed port in your Dockerfile or application
         env:
-          - name: NODE_ENV
-            value: "Staging"  # or another appropriate value
-          - name: API_PORT_STAGE
-            valueFrom:
-              secretKeyRef:
-                name: sumit-stage-secret
-                key: sumit-stage-port
-          - name: MY_ENV_NAME_STAGE
-            valueFrom:
-              secretKeyRef:
-                name: sumit-stage-secret
-                key: sumit-stage-env
-        imagePullPolicy: Always
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-stag-secrets
+              key: aws-access-key-id
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-stag-secrets
+              key: aws-secret-access-key
  
  
 ---
