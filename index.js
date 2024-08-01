@@ -108,7 +108,7 @@ async function getSecrets(secretName) {
   app.use(express.json());
  
   app.get('/', (req, res) => {
-    res.send('Hello DevOps STAG branch update'            + process.env.MY_ENV_NAME);
+    res.send('Hello DevOps STAG branch update rollout '            + process.env.MY_ENV_NAME);
   });
  
   app.listen(port, () => {
