@@ -293,12 +293,18 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Retrieve and process secrets from AWS Secrets Manager
+      - name: Retrieve secrets from AWS Secrets Manager
         id: retrieve-secrets
         run: |
-          secret=$(aws secretsmanager get-secret-value --secret-id ${{ env.SECRET_NAME }} --query 'SecretString' --output text)
-          echo "$secret" | python3 -c "import sys, json; secret = json.load(sys.stdin); [print(f'{k}={v}') for k, v in secret.items()]" > .env
-          cat .env
+          aws secretsmanager get-secret-value --secret-id ${{ env.SECRET_NAME }} --query 'SecretString' --output text > secrets.json
+          cat secrets.json
+        shell: bash
+
+      - name: Export secrets as environment variables
+        id: export-secrets
+        run: |
+          export $(jq -r 'to_entries | map("\(.key)=\(.value|tostring)") | .[]' secrets.json)
+        shell: bash
 
       - name: Build Docker image
         run: |
