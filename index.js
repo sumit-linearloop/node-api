@@ -1,18 +1,18 @@
-const express = require('express');
-const dotenv = require('dotenv'); 
+// const express = require('express');
+// const dotenv = require('dotenv'); 
 
-dotenv.config(); // Load environment variables first
+// dotenv.config(); // Load environment variables first
 
-const app = express();
-const port = process.env.API_PORT;
+// const app = express();
+// const port = process.env.API_PORT;
 
-app.get('/', (req, res) => {
-    res.send(`Hello DevOps CI/CD pipeline create and push to Kubernetes!${process.env.MY_ENV_NAME}${process.env.API_PORT}`);
-});
+// app.get('/', (req, res) => {
+//     res.send(`Hello DevOps CI/CD pipeline create and push to Kubernetes!${process.env.MY_ENV_NAME}${process.env.API_PORT}`);
+// });
 
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
-});
+// app.listen(port, () => {
+//     console.log(`Example app listening at http://localhost:${port}`);
+// });
 
 
 
@@ -69,47 +69,47 @@ app.listen(port, () => {
 // });
 
 
-// const express = require('express');
-// const dotenv = require('dotenv');
-// const path = require('path');
-// const { SecretsManagerClient, GetSecretValueCommand } = require('@aws-sdk/client-secrets-manager');
+const express = require('express');
+const dotenv = require('dotenv');
+const path = require('path');
+const { SecretsManagerClient, GetSecretValueCommand } = require('@aws-sdk/client-secrets-manager');
  
-// const app = express();
+const app = express();
  
-// const region = 'us-east-1';
-// const client = new SecretsManagerClient({ region });
+const region = 'us-east-1';
+const client = new SecretsManagerClient({ region });
  
-// async function getSecrets(secretName) {
-//   try {
-//     const command = new GetSecretValueCommand({ SecretId: secretName });
-//     const data = await client.send(command);
-//     if (data.SecretString) {
-//       return JSON.parse(data.SecretString);
-//     } else {
-//       console.error("Secret not in string format.");
-//     }
-//   } catch (err) {
-//     console.error("Error retrieving secrets:", err);
-//   }
-//   return null;
-// }
+async function getSecrets(secretName) {
+  try {
+    const command = new GetSecretValueCommand({ SecretId: secretName });
+    const data = await client.send(command);
+    if (data.SecretString) {
+      return JSON.parse(data.SecretString);
+    } else {
+      console.error("Secret not in string format.");
+    }
+  } catch (err) {
+    console.error("Error retrieving secrets:", err);
+  }
+  return null;
+}
  
-// (async () => {
-//   const secretName = 'Envfile';
-//   const secrets = await getSecrets(secretName);
-//   if (secrets) {
-//     Object.keys(secrets).forEach(key => {
-//       process.env[key] = secrets[key];
-//     });
-//   }
-//   const port = process.env.API_PORT;
-//   app.use(express.json());
+(async () => {
+  const secretName = 'Envfile';
+  const secrets = await getSecrets(secretName);
+  if (secrets) {
+    Object.keys(secrets).forEach(key => {
+      process.env[key] = secrets[key];
+    });
+  }
+  const port = process.env.API_PORT;
+  app.use(express.json());
  
-//   app.get('/', (req, res) => {
-//     res.send('Hello DevOps Sumit branch update'            + process.env.MY_ENV_NAME);
-//   });
+  app.get('/', (req, res) => {
+    res.send('Hello DevOps Sumit branch update'            + process.env.MY_ENV_NAME);
+  });
  
-//   app.listen(port, () => {
-//     console.log(`Server is running on http://localhost:${port}`);
-//   });
-// })();
+  app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+  });
+})();
