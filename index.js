@@ -1,5 +1,5 @@
 const express = require('express');
-const dotenv = require('dotenv');
+const dotenv = require('dotenv'); 
 
 dotenv.config(); // Load environment variables first
 
@@ -7,7 +7,7 @@ const app = express();
 const port = process.env.API_PORT;
 
 app.get('/', (req, res) => {
-    res.send('Hello DevOps CI/CD pipeline create and push to Kubernetes!' + process.env.MY_ENV_NAME + process.env.API_PORT);
+    res.send(`Hello DevOps CI/CD pipeline create and push to Kubernetes!${process.env.MY_ENV_NAME}${process.env.API_PORT}`);
 });
 
 app.listen(port, () => {
