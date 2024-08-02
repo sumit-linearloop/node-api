@@ -27,15 +27,16 @@
 #       - "6379:6379"
 
 
-version: '3'
+version: '3.8'
 
 services:
-  nest-api:
+  app:
     build:
       context: .
-      dockerfile: Dockerfile
-    image: node-api
-    container_name: node-api
-    restart: unless-stopped
-    env_file:
-      - .env # This should be the single .env file for the container
+      dockerfile: Dockerfile.dev
+    image: dev-api
+    container_name: dev-api
+    ports:
+      - "1400:1400"
+    env_file
+      - .env
