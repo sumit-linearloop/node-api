@@ -66,11 +66,11 @@
 
 # #!/bin/bash
 
-# Fetch secrets from AWS Secrets Manager
-aws secretsmanager get-secret-value --secret-id E --region us-west-2 --query SecretString --output text | jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' > /secrets/env-file
+# # Fetch secrets from AWS Secrets Manager
+# aws secretsmanager get-secret-value --secret-id E --region us-west-2 --query SecretString --output text | jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' > /secrets/env-file
 
-# Export the environment variables
-export $(cat /secrets/env-file | xargs)
+# # Export the environment variables
+# export $(cat /secrets/env-file | xargs)
 
-# Execute the command
-exec "$@"
+# # Execute the command
+# exec "$@"

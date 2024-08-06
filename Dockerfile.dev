@@ -1,24 +1,24 @@
-# FROM node:14
-# WORKDIR /app
-# COPY package*.json ./
-# RUN npm install
-# COPY . .
-# ENV NODE_ENV=development
-# EXPOSE 1400
-# CMD ["npm", "start"]
-
-
-FROM node:18
-RUN apt-get update && \
-    apt-get install -y awscli jq
-RUN mkdir -p /secrets
-WORKDIR /usr/src/app
+FROM node:14
+WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-COPY 1.sh /1.sh
-RUN chmod +x /1.sh
-ENTRYPOINT ["sh", "-c", "/1.sh && npm start"]
+ENV NODE_ENV=development
+EXPOSE 3000
+CMD ["npm", "start"]
+
+
+# FROM node:18
+# RUN apt-get update && \
+#     apt-get install -y awscli jq
+# RUN mkdir -p /secrets
+# WORKDIR /usr/src/app
+# COPY package*.json ./
+# RUN npm install
+# COPY . .
+# COPY 1.sh /1.sh
+# RUN chmod +x /1.sh
+# ENTRYPOINT ["sh", "-c", "/1.sh && npm start"]
 
 
 
