@@ -369,7 +369,7 @@ jobs:
             -Dsonar.sources=. \
             -Dsonar.host.url=${{ env.SONAR_HOST_URL }} \
             -Dsonar.token=${{ env.SONAR_TOKEN }} \
-            -Dsonar.test.inclusions=**/*.index.js \
+            -Dsonar.test.inclusions=**/*.test.js \
             -Dsonar.sourceEncoding=UTF-8 \
             -Dsonar.exclusions=node_modules/**,coverage/**,dist/**
 
