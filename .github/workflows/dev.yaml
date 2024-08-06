@@ -342,7 +342,15 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
-    steps:
+services:
+    sonarqube:
+      image: sonarqube:latest
+      ports:
+        - 9000:9000
+      options: --health-cmd="curl -s http://localhost:9000/api/system/health | grep UP" --health-interval=30s --health-timeout=10s --health-retries=3
+
+
+steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
