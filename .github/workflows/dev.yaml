@@ -367,7 +367,7 @@ jobs:
             -Dsonar.projectName=DevOps \
             -Dsonar.projectVersion=1.0 \
             -Dsonar.sources=. \
-            -Dsonar.host.url=${{ env.SONAR_HOST_URL }} \
+            -Dsonar.host.url=http://localhost:9000/
             -Dsonar.token=${{ env.SONAR_TOKEN }} \
             -Dsonar.test.inclusions=**/*.test.js \
             -Dsonar.sourceEncoding=UTF-8 \
