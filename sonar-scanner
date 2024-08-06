@@ -1,0 +1,5 @@
+C:\sonarqube\sonar-scanner-6.0.0.4432-windows\bin\sonar-scanner
+Dsonar.projectKey=DevOps
+Dsonar.sources=.\
+Dsonar.host.url=http://127.0.0.1:9000/
+Dsonar.token=sqp_af713508c4aba1b626a7c78e3e97c92643ad7f48
