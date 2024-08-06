@@ -385,7 +385,6 @@ jobs:
 
       - name: Install SonarQube Scanner
         run: npm install -g sonarqube-scanner
-
       - name: Run SonarQube Scanner
         run: |
            sonar-scanner \
