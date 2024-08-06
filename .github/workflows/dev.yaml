@@ -336,21 +336,20 @@ env:
   BUILD_NUMBER: ${{ github.run_number }}
   AWS_REGION: us-east-1
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+  SONAR_HOST_URL: http://localhost:9000
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
-services:
-    sonarqube:
-      image: sonarqube:latest
-      ports:
-        - 9000:9000
-      options: --health-cmd="curl -s http://localhost:9000/api/system/health | grep UP" --health-interval=30s --health-timeout=10s --health-retries=3
+    services:
+      sonarqube:
+        image: sonarqube:latest
+        ports:
+          - 9000:9000
+        options: --health-cmd="curl -s http://localhost:9000/api/system/health | grep UP" --health-interval=30s --health-timeout=10s --health-retries=3
 
-
-steps:
+    steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -375,8 +374,8 @@ steps:
             -Dsonar.projectName=DevOps \
             -Dsonar.projectVersion=1.0 \
             -Dsonar.sources=. \
-            -Dsonar.host.url=http://localhost:9000
-            -Dsonar.token=${{ env.SONAR_TOKEN }} \
+            -Dsonar.host.url=http://localhost:9000 \
+            -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
             -Dsonar.test.inclusions=**/*.test.js \
             -Dsonar.sourceEncoding=UTF-8 \
             -Dsonar.exclusions=node_modules/**,coverage/**,dist/**
@@ -406,7 +405,3 @@ steps:
         run: |
           docker tag dev-api:latest ${{ env.DOCKER_USERNAME }}/dev-api:${{ env.BUILD_NUMBER }}
           docker push ${{ env.DOCKER_USERNAME }}/dev-api:${{ env.BUILD_NUMBER }}
-
-
-
-
