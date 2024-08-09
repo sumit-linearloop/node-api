@@ -364,7 +364,6 @@
 
 
 
-
 name: Dev Branch - Build, Push Docker Image
  
 on:
@@ -375,7 +374,10 @@ on:
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
- 
+  BUILD_NUMBER: ${{ github.run_number }}
+  AWS_REGION: us-east-1
+  SECRET_NAME: Envfile 
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -397,18 +399,14 @@ jobs:
         run: |
           docker build --no-cache -f Dockerfile.dev -t dev-api:latest .
  
-      - name: Tag Docker image
-        run: docker tag dev-api:latest ${{ env.DOCKER_USERNAME }}/dev-api:latest
- 
-      - name: Push Docker image
-        run: docker push ${{ env.DOCKER_USERNAME }}/dev-api:latest
- 
-      - name: Tag Docker image with build number
+      - name: Tag Docker image with build number and latest
         run: |
           docker tag dev-api:latest ${{ env.DOCKER_USERNAME }}/dev-api:latest
+          docker tag dev-api:latest ${{ env.DOCKER_USERNAME }}/dev-api:${{ github.sha }}
           docker push ${{ env.DOCKER_USERNAME }}/dev-api:latest
+          docker push ${{ env.DOCKER_USERNAME }}/dev-api:${{ github.sha }}
  
-deploy:
+  deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
     steps:
@@ -434,8 +432,7 @@ deploy:
       - name: Update kubeconfig
         run: |
           mkdir -p $HOME/.kube
-          export KUBECONFIG=$HOME/.kube/config
-          aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name eks-bb-123
+          aws eks update-kubeconfig --name eks-bb-123
  
       - name: Debug File Location
         run: |
@@ -444,27 +441,21 @@ deploy:
  
       - name: Retrieve and Set Secrets from AWS Secrets Manager
         run: |
-          # Fetch the secret JSON from AWS Secrets Manager
           SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id ${{ env.SECRET_NAME }} --query SecretString --output text)
-         
-          # Export each key-value pair from the JSON as environment variables
           echo "$SECRET_JSON" | jq -r 'to_entries | .[] | "export " + .key + "=\"" + .value + "\""' >> export_secrets.sh
           source export_secrets.sh
  
-          # Replace placeholders in deployment file
           IMAGE_TAG=${{ github.sha }}
           sed -i.bak "s|sumit246/dev-api:latest|${{ secrets.DOCKERHUB_USERNAME }}/dev-api:latest|g" dev-api.yaml
  
-          # Replace environment variable placeholders
           for key in $(echo "$SECRET_JSON" | jq -r 'keys[]'); do
             value=$(eval echo \$$key)
             sed -i.bak "s|{{$key}}|$value|g" dev-api.yaml
           done
  
-          # Clean up the temporary file
           rm export_secrets.sh
  
       - name: Apply Kubernetes manifests
         run: |
-          kubectl rollout restart deployment/sumit-dev-deployment
           kubectl apply -f dev-api.yaml
+          kubectl rollout restart deployment/sumit-dev-deployment
