@@ -1,11 +1,13 @@
-FROM node:14
+FROM node:18 # Update to match your local node version if needed
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
 ENV NODE_ENV=development
-EXPOSE 1400
+ENV API_PORT=1400
+EXPOSE 1400 
 CMD ["npm", "start"]
+
 
 
 
