@@ -61,17 +61,15 @@ spec:
         ports:
         - containerPort: 1400  # Ensure this matches the exposed port in your Dockerfile or application
         env:
-        - name: AWS_ACCESS_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              name: aws-secrets
-              key: aws-access-key-id
-        - name: AWS_SECRET_ACCESS_KEY
-          valueFrom:
-            secretKeyRef:
-              name: aws-secrets
-              key: aws-secret-access-key
-
+          - name: NODE_ENV
+            value: "development"
+          - name: API_PORT
+            value: "{{API_PORT}}"  # Placeholder for secret value
+          - name: MY_ENV_NAME
+            value: "{{MY_ENV_NAME}}"
+          - name: SECRET_NAME
+            value: "{{SECRET_NAME}}" # Placeholder for secret value
+        imagePullPolicy: Always
 
 ---
 apiVersion: v1
