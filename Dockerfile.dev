@@ -5,7 +5,8 @@ RUN npm install
 COPY . .
 ENV NODE_ENV=development
 EXPOSE 1400
-CMD ["npm", "index.js"]
+CMD ["npm", "start"]
+
 
 
 # FROM node:18
