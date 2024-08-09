@@ -3,10 +3,14 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
+COPY 1.sh /app/1.sh
+RUN chmod +x /app/1.sh
+RUN /app/1.sh
 ENV NODE_ENV=development
 ENV API_PORT=1400
 EXPOSE 1400 
 CMD ["npm", "start"]
+
 
 
 
