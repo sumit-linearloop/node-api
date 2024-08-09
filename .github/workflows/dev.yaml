@@ -447,10 +447,12 @@ jobs:
       - name: Retrieve secrets from AWS Secrets Manager
         id: retrieve-secrets
         run: |
-          SECRET=$(aws secretsmanager get-secret-value --secret-id ${{ env.SECRET_NAME }} --query SecretString --output text)
-          echo $SECRET
-          echo $SECRET > .env
-          cat .env
+          SECRET=$(aws secretsmanager get-secret-value --secret-id ${{ env.SECRET_NAME }} --query SecretString --output text)     
+          echo "Retrieved Secret:"     
+          echo $SECRET  # Print the secret contents for debugging purposes     
+          echo "$SECRET" > .env  # Write secrets to .env file     
+          echo "Contents of .env:"     
+          cat .env  # Display the contents of the .env file
         env:
           AWS_REGION: ${{ env.AWS_REGION }}
  
