@@ -310,7 +310,9 @@ jobs:
         id: export-secrets
         run: |
           export $(jq -r 'to_entries | map("\(.key)=\(.value|tostring)") | .[]' secrets.json)
-        shell: bash
+          echo "API_PORT=${API_PORT}"
+          echo "MY_ENV_NAME=${MY_ENV_NAME}"
+          shell: bash
 
       - name: Build Docker image
         run: |
