@@ -112,7 +112,7 @@ async function getSecrets(secretName) {
   app.use(express.json());
  
   app.get('/', (req, res) => {
-    res.send('Hello DevOps  12ka4    '  + process.env.MY_ENV_NAME);
+    res.send('Hello DevOps  12ka4   s '  + process.env.MY_ENV_NAME);
   });
  
   app.listen(port, () => {
