@@ -103,7 +103,7 @@ async function getSecrets(secretName) {
     });
   }
  
-  const port = process.env.API_PORT || 3000; // Default to port 3000 if API_PORT is not set
+  const port = process.env.API_PORT; // Default to port 3000 if API_PORT is not set
   if (!port) {
     console.error('API_PORT environment variable is not set.');
     process.exit(1);
@@ -112,7 +112,7 @@ async function getSecrets(secretName) {
   app.use(express.json());
  
   app.get('/', (req, res) => {
-    res.send('Hello DevOps  12ka4      '  + process.env.MY_ENV_NAME);
+    res.send('Hello DevOps  12ka4    jgjygdhtggssz  '  + process.env.MY_ENV_NAME);
   });
  
   app.listen(port, () => {

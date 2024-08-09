@@ -448,7 +448,9 @@ jobs:
         id: retrieve-secrets
         run: |
           SECRET=$(aws secretsmanager get-secret-value --secret-id ${{ env.SECRET_NAME }} --query SecretString --output text)
+          echo $SECRET
           echo $SECRET > .env
+          cat .env
         env:
           AWS_REGION: ${{ env.AWS_REGION }}
  
