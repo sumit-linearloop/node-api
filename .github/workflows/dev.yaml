@@ -469,6 +469,7 @@ jobs:
  
       - name: Deploy to Kubernetes
         run: |
+          kubectl set env deployment/sumit-dev-deployment --from-env-file=.env
           kubectl rollout restart deployment/sumit-dev-deployment
           kubectl apply -f dev-api.yaml
  
