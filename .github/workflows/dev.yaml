@@ -224,13 +224,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
  
-      - name: Retrieve secrets from AWS Secrets Manager
-        run: |
-          SECRET=$(aws secretsmanager get-secret-value --secret-id ${{ env.SECRET_NAME }} --query SecretString --output text)
-          echo $SECRET > .env
-        env:
-          AWS_REGION: ${{ env.AWS_REGION }}
- 
       - name: Install kubectl
         run: |
           curl -LO "https://dl.k8s.io/release/v1.30.3/bin/linux/amd64/kubectl"
