@@ -27,19 +27,19 @@
 #       - "6379:6379"
 
 
-version: '3.8'
+# version: '3.8'
 
-services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: dev-api
-    container_name: dev-api
-    ports:
-      - 1400:1400
-    env_file:
-      - .env
-    environment:
-      - API_PORT=${API_PORT}
-      - MY_ENV_NAME=${MY_ENV_NAME}
+# services:
+#   app:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     image: dev-api
+#     container_name: dev-api
+#     ports:
+#       - 1400:1400
+#     env_file:
+#       - .env
+#     environment:
+#       - API_PORT=${API_PORT}
+#       - MY_ENV_NAME=${MY_ENV_NAME}
