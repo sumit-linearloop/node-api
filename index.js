@@ -143,7 +143,7 @@ app.use(express.json());
 
 // Define a route
 app.get('/', (req, res) => {
-  const message = `Hello DevOps 12 ${process.env.MY_ENV_NAME || ''}`;
+  const message = `Hello DevOps ${process.env.MY_ENV_NAME || ''}`;
   res.send(message);
 });
 
