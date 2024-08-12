@@ -167,7 +167,7 @@ const port = process.env.API_PORT;
   app.use(express.json());
  
   app.get('/', (req, res) => {
-    res.send('Hello DevOps AWS Secret '  + process.env.MY_ENV_NAME);
+    res.send('Hello DevOps AWS '  + process.env.MY_ENV_NAME);
   });
  
   app.listen(port, () => {
