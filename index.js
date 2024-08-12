@@ -120,34 +120,31 @@
 //   });
 // })();
 
+// 
+
+
+
 const express = require('express');
 const dotenv = require('dotenv');
-
-// Load environment variables from .env file
 dotenv.config();
 const path = require('path');
 const { SecretsManagerClient, GetSecretValueCommand } = require('@aws-sdk/client-secrets-manager');
-
+ 
 const app = express();
-
-// Get port from environment variables
-const port = process.env.API_PORT;
-
-if (!port || isNaN(port)) {
-  console.error('API_PORT environment variable is not set or is invalid.');
-  process.exit(1);
-}
-
-// Middleware to parse JSON
-app.use(express.json());
-
-// Define a route
-app.get('/', (req, res) => {
-  const message = `Hello DevOps ${process.env.MY_ENV_NAME || ''}`;
-  res.send(message);
-});
-
-// Start the server
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+ 
+ 
+  const port = process.env.API_PORT; // Default to port 3000 if API_PORT is not set
+  if (!port) {
+    console.error('API_PORT environment variable is not set.');
+    process.exit(1);
+  }
+ 
+  app.use(express.json());
+ 
+  app.get('/', (req, res) => {
+    res.send('Hello DevOps   '  + process.env.MY_ENV_NAME);
+  });
+ 
+  app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+  });
