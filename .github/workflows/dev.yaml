@@ -175,7 +175,7 @@ env:
   BUILD_NUMBER: ${{ github.run_number }}
   AWS_REGION: us-east-1
   SECRET_NAME: Envfile 
-  
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -242,8 +242,8 @@ jobs:
         run: |
           mkdir -p $HOME/.kube
           export KUBECONFIG=$HOME/.kube/config
-          aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ci-cd-pipeline
- 
+          aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name eks-bb-123
+
       - name: Deploy to Kubernetes
         run: |
           kubectl rollout restart deployment/sumit-dev-deployment
