@@ -1,19 +1,19 @@
 
-const express = require('express');
-const dotenv = require('dotenv'); 
+// const express = require('express');
+// const dotenv = require('dotenv'); 
 
-dotenv.config(); // Load environment variables first
+// dotenv.config(); // Load environment variables first
 
-const app = express();
-const port = process.env.API_PORT; // Added `||` to provide a default value
+// const app = express();
+// const port = process.env.API_PORT; // Added `||` to provide a default value
 
-app.get('/', (req, res) => {
-    res.send('Hello DevOps CI/CD pipeline create and push to Kubernetes!cc');
-}); // Closing parenthesis added here
+// app.get('/', (req, res) => {
+//     res.send('Hello DevOps CI/CD pipeline create and push to Kubernetes!cc');
+// }); // Closing parenthesis added here
 
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
-});
+// app.listen(port, () => {
+//     console.log(`Example app listening at http://localhost:${port}`);
+// });
 
 
 
@@ -149,3 +149,27 @@ app.listen(port, () => {
 //   app.listen(port, () => {
 //     console.log(`Server is running on http://localhost:${port}`);
 //   });
+
+
+const express = require('express');
+const dotenv = require('dotenv');
+dotenv.config();
+const path = require('path');
+const { SecretsManagerClient, GetSecretValueCommand } = require('@aws-sdk/client-secrets-manager');
+ 
+const app = express();
+const port = process.env.API_PORT;
+  if (!port) {
+    console.error('API_PORT environment variable is not set.');
+    process.exit(1);
+  }
+ 
+  app.use(express.json());
+ 
+  app.get('/', (req, res) => {
+    res.send('Hello DevOps  Jayyy   '  + process.env.MY_ENV_NAME);
+  });
+ 
+  app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+  });

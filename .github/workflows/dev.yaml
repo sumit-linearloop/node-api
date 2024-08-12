@@ -209,8 +209,8 @@ jobs:
           SECRET_NAME: Envfile
         run: |
           docker build --no-cache \
-            --build-arg AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
-            --build-arg AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
+            --build-arg AWS_ACCESS_KEY_ID=${{ env.AWS_ACCESS_KEY_ID }} \
+            --build-arg AWS_SECRET_ACCESS_KEY=${{ env.AWS_SECRET_ACCESS_KEY }} \
             --build-arg AWS_REGION=us-east-1 \
             -f Dockerfile.dev -t dev-api:latest .
 
