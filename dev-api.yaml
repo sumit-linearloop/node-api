@@ -60,7 +60,17 @@ spec:
         image: sumit246/dev-api:latest  # Ensure this tag is correct
         ports:
         - containerPort: 1400  # Ensure this matches the exposed port in your Dockerfile or application
-
+    env:
+      - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-secrets
+              key: aws-access-key-id
+      - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-secrets
+              key: aws-secret-access-key
 ---
 apiVersion: v1
 kind: Service
