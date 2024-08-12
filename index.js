@@ -120,7 +120,10 @@
 //   });
 // })();
 
-
+const express = require('express');
+const dotenv = require('dotenv');
+dotenv.config();
+const app = expres()
 
 const port = process.env.API_PORT; // Default to port 3000 if API_PORT is not set
   if (!port) {
