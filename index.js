@@ -8,7 +8,7 @@ const app = express();
 const port = process.env.API_PORT; // Added `||` to provide a default value
 
 app.get('/', (req, res) => {
-    res.send('Hello DevOps CI/CD pipeline create and push to Kubernetes!');
+    res.send('Hello DevOps CI/CD pipeline create and push to Kubernetes!cc');
 }); // Closing parenthesis added here
 
 app.listen(port, () => {
