@@ -27,17 +27,17 @@
 #       - "6379:6379"
 
 
-version: '3.8'
+# version: '3.8'
 
-services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    image: dev-api
-    container_name: dev-api
-    ports:
-      - "${API_PORT:-1400}:${API_PORT:-1400}"  # Default to 1400 if API_PORT is not set
-    environment:
-      - API_PORT=${API_PORT}
-      - MY_ENV_NAME=${MY_ENV_NAME}
+# services:
+#   app:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile.dev
+#     image: dev-api
+#     container_name: dev-api
+#     ports:
+#       - "${API_PORT:-1400}:${API_PORT:-1400}"  # Default to 1400 if API_PORT is not set
+#     environment:
+#       - API_PORT=${API_PORT}
+#       - MY_ENV_NAME=${MY_ENV_NAME}
