@@ -259,6 +259,7 @@ jobs:
         run: |
           kubectl rollout restart deployment/sumit-dev-deployment
           kubectl apply -f dev-api.yaml
+          kubectl apply -f ingress.yaml
 
 
 
