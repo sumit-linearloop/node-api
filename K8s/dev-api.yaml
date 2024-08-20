@@ -34,17 +34,12 @@
 #       port: 80
 #       targetPort: 1400  # Docker-file Build Port Number
 
-
-
-
-
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sumit-dev-deployment
   labels:
-    app: dev-api
+    app: node-api
 spec:
   replicas: 1
   selector:
@@ -57,11 +52,12 @@ spec:
     spec:
       containers:
       - name: dev-api
-        image: sumit246/dev-api:latest  # Ensure this tag is correct
+        image: sumit246/dev-api:latest  # Docker Hub image name
         ports:
-        - containerPort: 1400  # Ensure this matches the exposed port in your Dockerfile or application
-        
+        - containerPort: 1402  # Ensure this matches the exposed port in your Dockerfile or application
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
